@@ -61,6 +61,8 @@
             slidesContainer: 'div',
             // The tag name, Id, element or querySelector of the title element:
             titleElement: 'h3',
+            // The tag name, Id, element or querySelector of the description element:
+            descriptionElement: 'h4', // evadremlab - add support for description
             // The class to add when the gallery is visible:
             displayClass: 'blueimp-gallery-display',
             // The class to add when the gallery controls are visible:
@@ -924,7 +926,14 @@
             this.setTimeout(this.options.onslide, [index, this.slides[index]]);
         },
 
-        setTitle: function (index) {
+        setTitle: function (index) { // evadremlab - add support for description
+            var title = this.slides[index].firstChild.title;
+            var description = this.list[index].getAttribute('data-description');
+      
+            this.titleElement.length && (this.titleElement.empty(), title && this.titleElement[0].appendChild(document.createTextNode(title)));
+            this.descriptionElement.length && (this.descriptionElement.empty(), description && this.descriptionElement[0].appendChild(document.createTextNode(description)));
+
+            /*
             var text = this.slides[index].firstChild.title,
                 titleElement = this.titleElement;
             if (titleElement.length) {
@@ -933,6 +942,7 @@
                     titleElement[0].appendChild(document.createTextNode(text));
                 }
             }
+            */
         },
 
         setTimeout: function (func, args, wait) {
@@ -1306,6 +1316,9 @@
             }
             this.titleElement = this.container.find(
                 this.options.titleElement
+            ).first();
+            this.descriptionElement = this.container.find( // evadremlab - add support for description
+                this.options.descriptionElement
             ).first();
             if (this.num === 1) {
                 this.container.addClass(this.options.singleClass);
